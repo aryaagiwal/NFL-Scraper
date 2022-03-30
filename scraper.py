@@ -22,5 +22,5 @@ standings_nfcnorth = standings_nfceast.next_sibling.next_sibling
 standings_nfcsouth = standings_nfcnorth.next_sibling.next_sibling
 standings_nfcwest = standings_nfcsouth.next_sibling.next_sibling
 
-#at this point, each of the 8 standings subdivisons contains data on the respective conference
+#at this point, each of the 8 standings subdivisons contains data on the respective division
 #print(standings_afceast)
