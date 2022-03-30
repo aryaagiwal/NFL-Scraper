@@ -1,7 +1,9 @@
 import bs4 as bs
 from urllib.request import Request, urlopen
+import ssl
 
 if __name__ == "__main__":
+    ssl._create_default_https_context = ssl._create_unverified_context
     req = Request("https://www.nfl.com/standings/division/2020/REG")
     web_page = urlopen(req).read()
     soup = bs.BeautifulSoup(web_page, 'lxml')
@@ -13,7 +15,6 @@ if __name__ == "__main__":
     for table in soup.find_all("table"):
         for body in table.find_all("tbody"):
             for row in table.find_all("tr"):
-                #names.append(row.find("div", {"class" : "d3-o-club-fullname"}).get_text())
                 for td in row.find_all("td"):
                     print(td.get_text())
             '''
@@ -22,7 +23,5 @@ if __name__ == "__main__":
                 print(a.find("div", {"class" : "d3-o-club-fullname"}).get_text())
             tds = [body.find_all("td")]
             print(tds)'''
-                #body.find("div", {"class" : "d3-o-club-fullname"}).get_text)
-            #team_dict[body.find("div", {"class" : "d3-o-club-fullname"}).get_text] = body.find("td").get_text()
-    #print(team_dict)
+                
 
