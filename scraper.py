@@ -23,4 +23,6 @@ standings_nfcsouth = standings_nfcnorth.next_sibling.next_sibling
 standings_nfcwest = standings_nfcsouth.next_sibling.next_sibling
 
 #at this point, each of the 8 standings subdivisons contains data on the respective division
-#print(standings_afceast)
+tables = standings_afceast.find_all('tbody')
+for t in tables:
+    print(t.find_all('td'))

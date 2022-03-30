@@ -68,4 +68,3 @@ if __name__ == "__main__":
     }
     data_df = pd.DataFrame(data_dict)
     data_df.to_csv("./standings.csv")
-
