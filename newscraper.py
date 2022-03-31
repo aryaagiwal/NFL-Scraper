@@ -15,7 +15,7 @@ if __name__ == "__main__":
     wins = []
     losses = []
     ties = []
-    pfs, pas, hrs, rrs, drs, cfrs, nfcrs, ss, lfs = [], [], [], [], [], [], [] ,[] ,[]
+    pfs, pas, hrs, rrs, drs, cfrs, ncfrs, ss, lfs = [], [], [], [], [], [], [] ,[] ,[]
     for table in soup.find_all("table"):
         for body in table.find_all("tbody"):
             for row in table.find_all("tr"):
@@ -43,7 +43,7 @@ if __name__ == "__main__":
                     if td_idx % 18 == 12:
                         cfrs.append(td.get_text())
                     if td_idx % 18 == 14:
-                        nfcrs.append(td.get_text())
+                        ncfrs.append(td.get_text())
                     '''
                                         if td_idx % 18 == 15:
                         if (td.get_text()[-1] == 'L'):
@@ -54,6 +54,61 @@ if __name__ == "__main__":
 
                     if td_idx % 18 == 16:
                         lfs.append(td.get_text())
+
+    hw = []
+    hl = []
+    ht = []
+
+    rw = []
+    rl = []
+    rt = []
+
+    dw = []
+    dl = []
+    dt = []
+
+    cw = []
+    cl = []
+    ct = []
+
+    ncw = []
+    ncl = []
+    nct = []
+
+    lw = []
+    ll = []
+    lt = []
+
+    for val in hrs:
+        hw.append(int(val.strip().split(" - ")[0]))
+        hl.append(int(val.strip().split(" - ")[1]))
+        ht.append(int(val.strip().split(" - ")[2]))
+
+    for val in rrs:
+        rw.append(int(val.strip().split(" - ")[0]))
+        rl.append(int(val.strip().split(" - ")[1]))
+        rt.append(int(val.strip().split(" - ")[2]))
+
+    for val in drs:
+        dw.append(int(val.strip().split(" - ")[0]))
+        dl.append(int(val.strip().split(" - ")[1]))
+        dt.append(int(val.strip().split(" - ")[2]))
+
+    for val in cfrs:
+        cw.append(int(val.strip().split(" - ")[0]))
+        cl.append(int(val.strip().split(" - ")[1]))
+        ct.append(int(val.strip().split(" - ")[2]))
+
+    for val in ncfrs:
+        ncw.append(int(val.strip().split(" - ")[0]))
+        ncl.append(int(val.strip().split(" - ")[1]))
+        nct.append(int(val.strip().split(" - ")[2]))
+
+    for val in lfs:
+        lw.append(int(val.strip().split(" - ")[0]))
+        ll.append(int(val.strip().split(" - ")[1]))
+        lt.append(int(val.strip().split(" - ")[2]))
+
     data_dict = {
         "Names" : names,
         "Wins" : wins,
@@ -61,10 +116,24 @@ if __name__ == "__main__":
         "Ties" : ties,
         "Points For" : pfs,
         "Points Against" : pas,
-        "Home Record" : hrs,
-        "Road Record" : rrs,
-        "Conference Record" : cfrs,
-        "Non-Conference Record" : nfcrs
+        "Home Wins" : hw,
+        "Home Losses" : hl,
+        "Home Ties" : ht,
+        "Road Wins" : rw,
+        "Road Losses" : rl,
+        "Road Ties" : rt,
+        "Division Wins" : dw,
+        "Division Losses" : dl,
+        "Division Ties" : dt,
+        "Conference Wins" : cw,
+        "Conference Losses" : cl,
+        "Conference Ties" : ct,
+        "Non-Conference Wins" : ncw,
+        "Non-Conference Losses" : ncl,
+        "Non-Conference Ties" : nct,
+        "Last Five Wins" : lw,
+        "Last Five Losses" : ll,
+        "Last Five Ties" : lt
     }
     data_df = pd.DataFrame(data_dict)
     data_df.to_csv("./standings.csv")
