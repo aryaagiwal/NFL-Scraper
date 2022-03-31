@@ -6,7 +6,7 @@ import numpy as np
 
 if __name__ == "__main__":
     ssl._create_default_https_context = ssl._create_unverified_context
-    req = Request("https://www.nfl.com/standings/division/2020/REG")
+    req = Request("https://www.nfl.com/standings/division/2021/REG")
     web_page = urlopen(req).read()
     soup = bs.BeautifulSoup(web_page, 'lxml')
     division_names = [table.find("th", {"aria-label" : "Division name"}).get_text()
@@ -23,7 +23,7 @@ if __name__ == "__main__":
                 tds = row.find_all("td")
                 for td_idx, td in enumerate(tds):
                     if td_idx % 18 == 0:
-                        names.append(td.get_text().strip().split('\n')[0])
+                        names.append(td.get_text().strip().split('\n')[0] + " 2021")
                     if td_idx % 18 == 1:
                         wins.append(int(td.get_text()))
                     if td_idx % 18 == 2:
@@ -136,4 +136,4 @@ if __name__ == "__main__":
         "Last Five Ties" : lt
     }
     data_df = pd.DataFrame(data_dict)
-    data_df.to_csv("./standings.csv")
+    data_df.to_csv("./standings2021.csv")
