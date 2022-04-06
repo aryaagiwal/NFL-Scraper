@@ -3,23 +3,25 @@ from urllib.request import Request, urlopen
 import ssl
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 
-if __name__ == "__main__":
+
+def generate_standings():
     ssl._create_default_https_context = ssl._create_unverified_context
     req = Request("https://www.nfl.com/standings/division/2021/REG")
     web_page = urlopen(req).read()
     soup = bs.BeautifulSoup(web_page, 'lxml')
-    division_names = [table.find("th", {"aria-label" : "Division name"}).get_text()
+    division_names = [table.find("th", {"aria-label": "Division name"}).get_text()
                       for table in soup.find_all("table")]
     names = []
     wins = []
     losses = []
     ties = []
-    pfs, pas, hrs, rrs, drs, cfrs, ncfrs, ss, lfs = [], [], [], [], [], [], [] ,[] ,[]
+    pfs, pas, hrs, rrs, drs, cfrs, ncfrs, ss, lfs = [], [], [], [], [], [], [], [], []
     for table in soup.find_all("table"):
         for body in table.find_all("tbody"):
             for row in table.find_all("tr"):
-                #names.append(row.find("div", {"class" : "d3-o-club-fullname"}).get_text())
+                # names.append(row.find("div", {"class" : "d3-o-club-fullname"}).get_text())
                 tds = row.find_all("td")
                 for td_idx, td in enumerate(tds):
                     if td_idx % 18 == 0:
@@ -55,85 +57,103 @@ if __name__ == "__main__":
                     if td_idx % 18 == 16:
                         lfs.append(td.get_text())
 
-    hw = []
-    hl = []
-    ht = []
+        hw = []
+        hl = []
+        ht = []
 
-    rw = []
-    rl = []
-    rt = []
+        rw = []
+        rl = []
+        rt = []
 
-    dw = []
-    dl = []
-    dt = []
+        dw = []
+        dl = []
+        dt = []
 
-    cw = []
-    cl = []
-    ct = []
+        cw = []
+        cl = []
+        ct = []
 
-    ncw = []
-    ncl = []
-    nct = []
+        ncw = []
+        ncl = []
+        nct = []
 
-    lw = []
-    ll = []
-    lt = []
+        lw = []
+        ll = []
+        lt = []
 
-    for val in hrs:
-        hw.append(int(val.strip().split(" - ")[0]))
-        hl.append(int(val.strip().split(" - ")[1]))
-        ht.append(int(val.strip().split(" - ")[2]))
+        for val in hrs:
+            hw.append(int(val.strip().split(" - ")[0]))
+            hl.append(int(val.strip().split(" - ")[1]))
+            ht.append(int(val.strip().split(" - ")[2]))
 
-    for val in rrs:
-        rw.append(int(val.strip().split(" - ")[0]))
-        rl.append(int(val.strip().split(" - ")[1]))
-        rt.append(int(val.strip().split(" - ")[2]))
+        for val in rrs:
+            rw.append(int(val.strip().split(" - ")[0]))
+            rl.append(int(val.strip().split(" - ")[1]))
+            rt.append(int(val.strip().split(" - ")[2]))
 
-    for val in drs:
-        dw.append(int(val.strip().split(" - ")[0]))
-        dl.append(int(val.strip().split(" - ")[1]))
-        dt.append(int(val.strip().split(" - ")[2]))
+        for val in drs:
+            dw.append(int(val.strip().split(" - ")[0]))
+            dl.append(int(val.strip().split(" - ")[1]))
+            dt.append(int(val.strip().split(" - ")[2]))
 
-    for val in cfrs:
-        cw.append(int(val.strip().split(" - ")[0]))
-        cl.append(int(val.strip().split(" - ")[1]))
-        ct.append(int(val.strip().split(" - ")[2]))
+        for val in cfrs:
+            cw.append(int(val.strip().split(" - ")[0]))
+            cl.append(int(val.strip().split(" - ")[1]))
+            ct.append(int(val.strip().split(" - ")[2]))
 
-    for val in ncfrs:
-        ncw.append(int(val.strip().split(" - ")[0]))
-        ncl.append(int(val.strip().split(" - ")[1]))
-        nct.append(int(val.strip().split(" - ")[2]))
+        for val in ncfrs:
+            ncw.append(int(val.strip().split(" - ")[0]))
+            ncl.append(int(val.strip().split(" - ")[1]))
+            nct.append(int(val.strip().split(" - ")[2]))
 
-    for val in lfs:
-        lw.append(int(val.strip().split(" - ")[0]))
-        ll.append(int(val.strip().split(" - ")[1]))
-        lt.append(int(val.strip().split(" - ")[2]))
+        for val in lfs:
+            lw.append(int(val.strip().split(" - ")[0]))
+            ll.append(int(val.strip().split(" - ")[1]))
+            lt.append(int(val.strip().split(" - ")[2]))
 
-    data_dict = {
-        "Names" : names,
-        "Wins" : wins,
-        "Losses" : losses,
-        "Ties" : ties,
-        "Points For" : pfs,
-        "Points Against" : pas,
-        "Home Wins" : hw,
-        "Home Losses" : hl,
-        "Home Ties" : ht,
-        "Road Wins" : rw,
-        "Road Losses" : rl,
-        "Road Ties" : rt,
-        "Division Wins" : dw,
-        "Division Losses" : dl,
-        "Division Ties" : dt,
-        "Conference Wins" : cw,
-        "Conference Losses" : cl,
-        "Conference Ties" : ct,
-        "Non-Conference Wins" : ncw,
-        "Non-Conference Losses" : ncl,
-        "Non-Conference Ties" : nct,
-        "Last Five Wins" : lw,
-        "Last Five Losses" : ll,
-        "Last Five Ties" : lt
-    }
-    data_df = pd.DataFrame(data_dict)
-    data_df.to_csv("./standings2021.csv")
+        data_dict = {
+            "Names": names,
+            "Wins": wins,
+            "Losses": losses,
+            "Ties": ties,
+            "Points For": pfs,
+            "Points Against": pas,
+            "Home Wins": hw,
+            "Home Losses": hl,
+            "Home Ties": ht,
+            "Road Wins": rw,
+            "Road Losses": rl,
+            "Road Ties": rt,
+            "Division Wins": dw,
+            "Division Losses": dl,
+            "Division Ties": dt,
+            "Conference Wins": cw,
+            "Conference Losses": cl,
+            "Conference Ties": ct,
+            "Non-Conference Wins": ncw,
+            "Non-Conference Losses": ncl,
+            "Non-Conference Ties": nct,
+            "Last Five Wins": lw,
+            "Last Five Losses": ll,
+            "Last Five Ties": lt
+        }
+        data_df = pd.DataFrame(data_dict)
+        data_df.to_csv("./standings2021.csv")
+
+
+def plot_playground():
+    data_df = pd.read_csv("./standings.csv")
+    data_df.plot(x="Points For", y="Wins")
+    plt.figure()
+    data_df.plot()
+    plt.show()
+
+
+# if __name__ == "__main__":
+# generate_standings()
+data_df = pd.read_csv("./standings.csv")
+pats_df = data_df.loc[data_df['Names'] == "New England Patriots"]
+pats_df.plot(x="Year", y="Wins")
+plt.savefig("patswins.png")
+#data_df.plot(x="Net Road Wins", y="Wins", kind='scatter')
+#plt.savefig("plot.png")
